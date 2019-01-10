@@ -3,25 +3,25 @@ const data = {
     {
       imgSrc:
         "https://s3-us-west-2.amazonaws.com/s.cdpn.io/53148/deathtostock-00.jpg",
-      heading: "--1--Hey now, you're an allstar",
+      heading: "Hey now, you're an allstar",
       colNum: 0
     },
     {
       imgSrc:
         "https://s3-us-west-2.amazonaws.com/s.cdpn.io/53148/deathtostock-02.jpg",
-      heading: "--2--Hey now, you're a rock star",
+      heading: "Hey now, you're a rock star",
       colNum: 0
     },
     {
       imgSrc:
         "https://s3-us-west-2.amazonaws.com/s.cdpn.io/53148/deathtostock-01.jpg",
-      heading: "--3--Get your game on, go play",
+      heading: "Get your game on, go play",
       colNum: 1
     },
     {
       imgSrc:
         "https://s3-us-west-2.amazonaws.com/s.cdpn.io/53148/deathtostock-03.jpg",
-      heading: "--4--Get the show on, get paid",
+      heading: "Get the show on, get paid",
       colNum: 1
     }
   ],

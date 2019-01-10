@@ -21,72 +21,6 @@ class App extends Component {
     };
   }
 
-  init() {
-    this.resize();
-    this.selectElements();
-    this.attachListeners();
-  }
-
-  // select all the elements in the DOM that are going to be used
-  selectElements() {
-    let {
-      cards,
-      nCards,
-      cover,
-      openContent,
-      openContentText,
-      openContentImage,
-      closeContent
-    } = this.state;
-
-    cards = document.getElementsByClassName("card");
-    nCards = cards.length;
-    cover = document.getElementById("cover");
-    openContent = document.getElementById("open-content");
-    openContentText = document.getElementById("open-content-text");
-    openContentImage = document.getElementById("open-content-image");
-    closeContent = document.getElementById("close-content");
-  }
-
-  /* Attaching three event listeners here:
-  - a click event listener for each card
-  - a click event listener to the close button
-  - a resize event listener on the window
-  */
-  attachListeners() {
-    const { nCards, closeContent } = this.state;
-    for (var i = 0; i < nCards; i++) {
-      this.attachListenerToCard(i);
-    }
-    closeContent.addEventListener("click", this.onCloseClick);
-    window.addEventListener("resize", this.resize);
-  }
-
-  attachListenerToCard(i) {
-    const { cards } = this.state;
-    cards[i].addEventListener("click", function(e) {
-      var card = this.getCardElement(e.target);
-      this.onCardClick(card, i);
-    });
-  }
-
-  /* When a card is clicked */
-  onCardClick(card, i) {
-    const { currentCard, openContent } = this.state;
-    // set the current card
-    currentCard = card;
-    // add the 'clicked' class to the card, so it animates out
-    currentCard.className += " clicked";
-    // animate the card 'cover' after a 500ms delay
-    setTimeout(function() {
-      this.animateCoverUp(currentCard);
-    }, 500);
-    // animate out the other cards
-    this.animateOtherCards(currentCard, true);
-    // add the open class to the page content
-    openContent.className += " open";
-  }
-
   /*
    * This effect is created by taking a separate 'cover' div, placing
    * it in the same position as the clicked card, and animating it to
@@ -120,20 +54,16 @@ class App extends Component {
   animateCoverBack(card) {
     const { cover, currentCard } = this.state;
     let cardPosition = card.getBoundingClientRect();
-    // the original card may be in a different position, because of scrolling, so the cover position needs to be reset before scaling back down
+
+    /**
+     * the original card may be in a different position,
+     * because of scrolling, so the cover position needs to
+     * be reset before scaling back down
+     */
     this.setCoverPosition(cardPosition);
     this.scaleCoverToFillWindow(cardPosition);
     // animate scale back to the card size and position
-    cover.style.transform =
-      "scaleX(" +
-      1 +
-      ") scaleY(" +
-      1 +
-      ") translate3d(" +
-      0 +
-      "px, " +
-      0 +
-      "px, 0px)";
+    cover.style.transform = `scaleX(1) scaleY(1) translate3d(0px, 0px, 0px)`;
     setTimeout(() => {
       const {
         cover,
@@ -191,84 +121,30 @@ class App extends Component {
       "px, 0px)";
   }
 
-  // /* When the close is clicked */
-  // onCloseClick() {
-  //   const { openContent, currentCard } = this.state;
-  //   // remove the open class so the page content animates out
-  //   openContent.className = openContent.className.replace(" open", "");
-  //   // animate the cover back to the original position card and size
-  //   this.animateCoverBack(currentCard);
-  //   // animate in other cards
-  //   this.animateOtherCards(currentCard, false);
-  // }
-
-  animateOtherCards(card, out) {
+  animateOtherCards = (card, out) => {
     const { cards, nCards } = this.state;
-    var delay = 100;
-    for (var i = 0; i < nCards; i++) {
+    let delay = 100;
+    for (let i = 0; i < nCards; i++) {
       // animate cards on a stagger, 1 each 100ms
       if (cards[i] === card) continue;
       if (out) this.animateOutCard(cards[i], delay);
       else this.animateInCard(cards[i], delay);
       delay += 100;
     }
-  }
+  };
 
   // animations on individual cards (by adding/removing card names)
-  animateOutCard(card, delay) {
-    setTimeout(function() {
+  animateOutCard = (card, delay) => {
+    setTimeout(() => {
       card.className += " out";
     }, delay);
-  }
+  };
 
-  animateInCard(card, delay) {
-    setTimeout(function() {
+  animateInCard = (card, delay) => {
+    setTimeout(() => {
       card.className = card.className.replace(" out", "");
     }, delay);
-  }
-
-  // this function searches up the DOM tree until it reaches the card element that has been clicked
-  getCardElement(el) {
-    if (el.className.indexOf("card ") > -1) return el;
-    else return this.getCardElement(el.parentElement);
-  }
-
-  // resize function - records the window width and height
-  // resize() {
-  //   const { pageIsOpen, cardPosition, currentCard } = this.state;
-
-  //   let { windowWidth, windowHeight } = this.state;
-
-  //   if (pageIsOpen) {
-  //     // update position of cover
-  //     cardPosition = currentCard.getBoundingClientRect();
-  //     this.setCoverPosition(cardPosition);
-  //     this.scaleCoverToFillWindow(cardPosition);
-  //   }
-  //   windowWidth = window.innerWidth;
-  //   windowHeight = window.innerHeight;
-  // }
-
-  paragraphText = `<p>Somebody once told me the world is gonna roll me.
-  I ain't the sharpest tool in the shed. She was looking
-  kind of dumb with her finger and her thumb in the shape
-  of an \"L\" on her forehead. Well the years start coming
-  and they don't stop coming. Fed to the rules and I hit the
-   ground running. Didn't make sense not to live for fun.
-   Your brain gets smart but your head gets dumb. So much to do,
-   so much to see. So what's wrong with taking the back streets?
-    You'll never know if you don't go. You'll never shine if you
-    don't glow.</p><p>Hey now, you're an all-star, get your game on,
-    go play. Hey now, you're a rock star, get the show on, get paid.
-    And all that glitters is gold. Only shooting stars break the
-    mold.</p><p>It's a cool place and they say it gets colder.
-    You're bundled up now, wait till you get older.
-    But the meteor men beg to differ. Judging by the hole in the
-    satellite picture. The ice we skate is getting pretty thin.
-     The water's getting warm so you might as well swim.
-     My world's on fire, how about yours?
-     That's the way I like it and I never get bored.</p>`;
-  /** -------------------------------------------- */
+  };
 
   // resize function - records the window width and height
   resize() {
@@ -292,30 +168,6 @@ class App extends Component {
     });
   }
 
-  myInit() {
-    this.resize();
-    let {
-      cover,
-      openContent,
-      openContentText,
-      openContentImage,
-      closeContent
-    } = this.state;
-    cover = document.getElementById("cover");
-    openContent = document.getElementById("open-content");
-    openContentText = document.getElementById("open-content-text");
-    openContentImage = document.getElementById("open-content-image");
-    closeContent = document.getElementById("close-content");
-
-    this.updateState({
-      cover,
-      openContent,
-      openContentText,
-      openContentImage,
-      closeContent
-    });
-  }
-
   onCloseClick = () => {
     console.log("running");
     const { openContent, currentCard } = this.state;
@@ -326,6 +178,36 @@ class App extends Component {
     // animate in other cards
     this.animateOtherCards(currentCard, false);
   };
+
+  myInit() {
+    this.resize();
+    let {
+      cards,
+      nCards,
+      cover,
+      openContent,
+      openContentText,
+      openContentImage,
+      closeContent
+    } = this.state;
+    cards = document.getElementsByClassName("card");
+    nCards = cards.length;
+    cover = document.getElementById("cover");
+    openContent = document.getElementById("open-content");
+    openContentText = document.getElementById("open-content-text");
+    openContentImage = document.getElementById("open-content-image");
+    closeContent = document.getElementById("close-content");
+
+    this.updateState({
+      cards,
+      nCards,
+      cover,
+      openContent,
+      openContentText,
+      openContentImage,
+      closeContent
+    });
+  }
 
   updateState = function(args) {
     this.setState({
