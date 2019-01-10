@@ -1,7 +1,7 @@
 import data from "./data";
 export const setCoverPosition = (cardPosition, state) => {
   const { cover } = state;
-  // style the cover so it is in exactly the same position as the card
+  // Style the cover so it is in exactly the same position as the card
   cover.style.left = cardPosition.left + "px";
   cover.style.top = cardPosition.top + "px";
   cover.style.width = cardPosition.width + "px";
@@ -10,31 +10,21 @@ export const setCoverPosition = (cardPosition, state) => {
 
 export const setCoverColor = (cardStyle, state) => {
   const { cover } = state;
-  // style the cover to be the same color as the card
+  // Style the cover to be the same color as the card
   cover.style.backgroundColor = cardStyle.backgroundColor;
 };
 
 export const scaleCoverToFillWindow = (cardPosition, state) => {
   const { cover, windowWidth, windowHeight } = state;
-  // calculate the scale and position for the card to fill the page,
+  // Calculate the scale and position for the card to fill the page,
   const scaleX = windowWidth / cardPosition.width;
   const scaleY = windowHeight / cardPosition.height;
   const offsetX =
     (windowWidth / 2 - cardPosition.width / 2 - cardPosition.left) / scaleX;
   const offsetY =
     (windowHeight / 2 - cardPosition.height / 2 - cardPosition.top) / scaleY;
-  // set the transform on the cover - it will animate because of the transition set on it in the CSS
-  cover.style.transform =
-    "scaleX(" +
-    scaleX +
-    ") scaleY(" +
-    scaleY +
-    ") translate3d(" +
-    offsetX +
-    "px, " +
-    offsetY +
-    "px, 0px)";
-  //this.props.updateState({ cover, windowWidth, windowHeight });
+  // Set the transform on the cover - it will animate because of the transition set on it in the CSS
+  cover.style.transform = `scaleX(${scaleX}) scaleY(${scaleY}) translate3d(${offsetX}px, ${offsetY}px, 0px)`;
 };
 
 /*
@@ -48,19 +38,19 @@ export const scaleCoverToFillWindow = (cardPosition, state) => {
  */
 export const animateCoverUp = (card, state) => {
   let { openContentText, openContentImage, pageIsOpen } = state;
-  // get the position of the clicked card
+  // Get the position of the clicked card
   let cardPosition = card.getBoundingClientRect();
-  // get the style of the clicked card
+  // Get the style of the clicked card
   let cardStyle = getComputedStyle(card);
   setCoverPosition(cardPosition, state);
   setCoverColor(cardStyle, state);
   scaleCoverToFillWindow(cardPosition, state);
-  // update the content of the opened page
+  // Update the content of the opened page
   openContentText.innerHTML =
     "<h1>" + card.children[2].textContent + "</h1>" + data.paragraphText;
   openContentImage.src = card.children[1].src;
   setTimeout(() => {
-    // update the scroll position to 0 (so it is at the top of the 'opened' page)
+    // Update the scroll position to 0 (so it is at the top of the 'opened' page)
     window.scroll(0, 0);
     // set page to open
     pageIsOpen = true;
@@ -109,8 +99,9 @@ export const animateInCard = (card, delay) => {
 };
 
 export const animateOtherCards = (card, out, state) => {
-  const { cards, nCards } = state;
+  const { cards } = state;
   let delay = 100;
+  let nCards = cards.length;
   for (let i = 0; i < nCards; i++) {
     // animate cards on a stagger, 1 each 100ms
     if (cards[i] === card) continue;

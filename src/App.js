@@ -1,25 +1,14 @@
 import React, { Component } from "react";
 import Cards from "./Cards";
 import OpenContent from "./OpenContent";
-import {
-  setCoverPosition,
-  setCoverColor,
-  scaleCoverToFillWindow,
-  animateCoverUp,
-  animateCoverBack,
-  animateOutCard,
-  animateInCard,
-  animateOtherCards
-} from "./CommonFunctions";
+import { animateCoverBack, animateOtherCards } from "./CommonFunctions";
 import "./App.css";
 
 class App extends Component {
-  //listing vars here so they're in the global scope
   constructor(props) {
     super(props);
     this.state = {
       cards: "",
-      nCards: "",
       cover: "",
       openContent: "",
       openContentText: "",
@@ -30,13 +19,7 @@ class App extends Component {
       windowHeight: null,
       currentCard: {}
     };
-    this.setCoverPosition = setCoverPosition.bind(this);
-    this.setCoverColor = setCoverColor.bind(this);
-    this.scaleCoverToFillWindow = scaleCoverToFillWindow.bind(this);
-    this.animateCoverUp = animateCoverUp.bind(this);
     this.animateCoverBack = animateCoverBack.bind(this);
-    this.animateOutCard = animateOutCard.bind(this);
-    this.animateInCard = animateInCard.bind(this);
     this.animateOtherCards = animateOtherCards.bind(this);
   }
 
@@ -55,7 +38,6 @@ class App extends Component {
     windowHeight = window.innerHeight;
     this.updateState({
       pageIsOpen,
-      cardPosition,
       currentCard,
       windowWidth,
       windowHeight
@@ -66,15 +48,14 @@ class App extends Component {
     this.resize();
     let {
       cards,
-      nCards,
       cover,
       openContent,
       openContentText,
       openContentImage,
       closeContent
     } = this.state;
+
     cards = document.getElementsByClassName("card");
-    nCards = cards.length;
     cover = document.getElementById("cover");
     openContent = document.getElementById("open-content");
     openContentText = document.getElementById("open-content-text");
@@ -83,7 +64,6 @@ class App extends Component {
 
     this.updateState({
       cards,
-      nCards,
       cover,
       openContent,
       openContentText,
@@ -104,18 +84,16 @@ class App extends Component {
 
   render() {
     return (
-      <div>
+      <>
         <div className="container">
           <Cards
             state={this.state}
             updateState={args => this.updateState(args)}
           />
         </div>
-
         <div id="cover" className="cover" />
-
         <OpenContent state={this.state} />
-      </div>
+      </>
     );
   }
 }

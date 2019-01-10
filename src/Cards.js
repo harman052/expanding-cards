@@ -1,24 +1,11 @@
 import React, { Component } from "react";
-import {
-  setCoverPosition,
-  setCoverColor,
-  scaleCoverToFillWindow,
-  animateCoverUp,
-  animateOutCard,
-  animateInCard,
-  animateOtherCards
-} from "./CommonFunctions";
+import { animateCoverUp, animateOtherCards } from "./CommonFunctions";
 import data from "./data";
 
 class Cards extends Component {
   constructor(props) {
     super(props);
-    this.setCoverPosition = setCoverPosition.bind(this);
-    this.setCoverColor = setCoverColor.bind(this);
-    this.scaleCoverToFillWindow = scaleCoverToFillWindow.bind(this);
     this.animateCoverUp = animateCoverUp.bind(this);
-    this.animateOutCard = animateOutCard.bind(this);
-    this.animateInCard = animateInCard.bind(this);
     this.animateOtherCards = animateOtherCards.bind(this);
   }
 
@@ -67,14 +54,10 @@ class Cards extends Component {
           </div>
         );
       }
-      /**
-       * Returning from arrow function
-       */
+      // Returning from arrow function
       return card;
     });
-    /**
-     * Returning from parent function
-     */
+    // Returning from parent function
     return card;
   };
 
