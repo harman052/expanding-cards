@@ -1,0 +1,1 @@
+This is React implementation of [Rachel Smith's](https://codepen.io/rachsmith/) [Expanding card page transition effect pen](https://codepen.io/rachsmith/full/PWxoLN).
